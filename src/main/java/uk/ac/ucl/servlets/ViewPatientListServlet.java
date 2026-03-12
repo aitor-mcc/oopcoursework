@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import uk.ac.ucl.model.Model;
 import uk.ac.ucl.model.ModelFactory;
+import uk.ac.ucl.model.Patient;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,25 +40,52 @@ public class ViewPatientListServlet extends HttpServlet
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
   {
     try {
-      // 1. Get the singleton instance of the Model.
-      // The Model handles the actual data processing and data retrieval.
       Model model = ModelFactory.getModel();
 
-      // 2. Retrieve the list of patient names from the model.
-      List<String> patientNames = model.getPatientNames();
+      String sortBy = request.getParameter("sort");
+      if (sortBy == null || sortBy.isBlank()) {
+        sortBy = "name-asc";
+      }
 
-      // 3. Add the data to the request object.
-      // This makes the 'patientNames' list accessible to the JSP page for rendering.
-      request.setAttribute("patientNames", patientNames);
+      String city = request.getParameter("city");
+      String state = request.getParameter("state");
+      String ethnicity = request.getParameter("ethnicity");
+      String race = request.getParameter("race");
+      String gender = request.getParameter("gender");
+      List<Patient> patients;
 
-      // 4. Invoke the JSP for display.
-      // RequestDispatcher.forward() is used to send the request/response objects to another resource (JSP).
+      if (city != null && !city.isBlank()) {
+        // Filter by city
+        patients = model.getPatientsByCity(city, sortBy);
+        request.setAttribute("filterCity", city);
+      } else if (state != null && !state.isBlank()) {
+        // Filter by state
+        patients = model.getPatientsByState(state, sortBy);
+        request.setAttribute("filterState", state);
+      } else if (ethnicity != null && !ethnicity.isBlank()) {
+        // Filter by ethnicity
+        patients = model.getPatientsByEthnicity(ethnicity, sortBy);
+        request.setAttribute("filterEthnicity", ethnicity);
+      } else if (race != null && !race.isBlank()) {
+        // Filter by race
+        patients = model.getPatientsByRace(race, sortBy);
+        request.setAttribute("filterRace", race);
+      } else if (gender != null && !gender.isBlank()) {
+        // Filter by gender
+        patients = model.getPatientsByGender(gender, sortBy);
+        request.setAttribute("filterGender", gender);
+      } else {
+        // Show all patients
+        patients = model.getPatients(sortBy);
+      }
+
+      request.setAttribute("patients", patients);
+      request.setAttribute("selectedSort", sortBy);
+
       ServletContext context = getServletContext();
       RequestDispatcher dispatch = context.getRequestDispatcher("/patientList.jsp");
       dispatch.forward(request, response);
     } catch (IOException e) {
-      // 5. Exception Handling.
-      // If there is an issue loading the model or data, log the error and forward to a dedicated error page.
       request.setAttribute("errorMessage", "Error loading data: " + e.getMessage());
       ServletContext context = getServletContext();
       RequestDispatcher dispatch = context.getRequestDispatcher("/error.jsp");

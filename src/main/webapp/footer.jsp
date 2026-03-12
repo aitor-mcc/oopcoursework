@@ -1,4 +1,3 @@
-<div class="links">
-  <p>The footer</p>
-  <div class="clearBoth"></div>
+    <p><a href="/index.html">Home</a></p>
+  </div>
 </div>

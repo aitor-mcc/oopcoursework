@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import uk.ac.ucl.model.Model;
+import uk.ac.ucl.model.Patient;
 import uk.ac.ucl.model.ModelFactory;
 
 import java.io.IOException;
@@ -68,7 +69,7 @@ public class SearchServlet extends HttpServlet {
       } else {
         // 4. Perform the search and store the results in a request attribute.
         // This makes the 'result' list accessible to the JSP page.
-        List<String> searchResult = model.searchFor(searchString);
+        List<Patient> searchResult = model.searchFor(searchString);
         request.setAttribute("result", searchResult);
       }
 

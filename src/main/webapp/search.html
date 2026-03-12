@@ -1,15 +1,20 @@
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Patient Data App</title>
+  <meta charset="UTF-8">
+  <title>Search - Patient Data App</title>
+  <link rel="stylesheet" type="text/css" href="/styles.css"/>
 </head>
 <body>
-<div class="main">
-  <h1>Search</h1>
-  <form method="GET" action="/runsearch">
-    <input type="text" name="searchstring" placeholder="Enter search keyword here"/>
-    <input type="submit" value="Search"/>
-  </form>
+<div class="container">
+  <div id="mainHeader">Search</div>
+  <div id="mainContent">
+    <form method="GET" action="/runsearch">
+      <input type="text" name="searchstring" placeholder="Enter search keyword here"/>
+      <input type="submit" value="Search"/>
+    </form>
+    <p><a href="/index.html">Home</a></p>
+  </div>
 </div>
 </body>
 </html>
