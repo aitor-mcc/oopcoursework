@@ -1,3 +1,2 @@
-    <p><a href="/index.html">Home</a></p>
   </div>
 </div>

@@ -1,5 +1,7 @@
 package uk.ac.ucl.model;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -431,4 +433,111 @@ public class Model
 
     return patients;
   }
+
+  public ArrayList<String> getColumnNames() {
+    return new ArrayList<>(data.getColumnNames());
+  }
+
+  /**
+   * Gets the underlying DataFrame.
+   * @return the DataFrame containing all patient data
+   */
+  public DataFrame getDataFrame() {
+    return data;
+  }
+
+  //methods for editing data
+  /**
+   * Adds a new patient row to the DataFrame.
+   * @param rowData map of column name → value for every column
+   */
+  public void addPatient(Map<String, String> rowData) {
+    for (String columnName : data.getColumnNames()) {
+      data.addValue(columnName, rowData.getOrDefault(columnName, ""));
+    }
+  }
+
+  /**
+   * Updates an existing patient row identified by ID.
+   * @param id      the patient ID to find
+   * @param rowData map of column name → new value
+   */
+  public void updatePatient(String id, Map<String, String> rowData) {
+    for (int i = 0; i < data.getRowCount(); i++) {
+      if (data.getValue(ID, i).equals(id)) {
+        for (String columnName : data.getColumnNames()) {
+          if (rowData.containsKey(columnName)) {
+            data.putValue(columnName, i, rowData.get(columnName));
+          }
+        }
+        return;
+      }
+    }
+  }
+
+  /**
+   * Deletes the patient row with the given ID.
+   * @param id the patient ID to delete
+   */
+  public void deletePatient(String id) {
+    for (int i = 0; i < data.getRowCount(); i++) {
+      if (data.getValue(ID, i).equals(id)) {
+        data.removeRow(i);
+        return;
+      }
+    }
+  }
+
+  /**
+   * Writes the current DataFrame back to the CSV file.
+   * @throws IOException if writing fails
+   */
+  public void saveToCSV() throws IOException {
+    List<String> columns = data.getColumnNames();
+    String filename = dataLoader.getFilename();
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+      // Write header
+      writer.write(String.join(",", columns));
+      writer.newLine();
+      // Write each row
+      for (int row = 0; row < data.getRowCount(); row++) {
+        StringBuilder sb = new StringBuilder();
+        for (int col = 0; col < columns.size(); col++) {
+          if (col > 0) sb.append(",");
+          String val = data.getValue(columns.get(col), row);
+          sb.append(val == null ? "" : val);
+        }
+        writer.write(sb.toString());
+        writer.newLine();
+      }
+    }
+  }
+
+/**
+ * Returns a map of age brackets to patient counts.
+ * Brackets: 0-9, 10-19, 20-29, ... 90+
+ */
+public Map<String, Integer> getAgeDistribution() {
+    Map<String, Integer> buckets = new LinkedHashMap<>();
+    // Initialise buckets in order
+    for (int i = 0; i <= 90; i += 10) {
+        buckets.put(i + "-" + (i + 9), 0);
+    }
+
+    int currentYear = java.time.LocalDate.now().getYear();
+
+    for (int row = 0; row < data.getRowCount(); row++) {
+        String birthDate = data.getValue(BIRTHDATE, row);
+        if (birthDate != null && birthDate.length() >= 4) {
+            try {
+                int birthYear = Integer.parseInt(birthDate.substring(0, 4));
+                int age = currentYear - birthYear;
+                int bucketStart = Math.min((age / 10) * 10, 90);
+                String key = bucketStart + "-" + (bucketStart + 9);
+                buckets.put(key, buckets.getOrDefault(key, 0) + 1);
+            } catch (NumberFormatException ignored) {}
+        }
+    }
+    return buckets;
+}
 }

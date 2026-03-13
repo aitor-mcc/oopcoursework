@@ -30,4 +30,8 @@ public class Column {
     public String getRowValue(int index){
         return this.rows.get(index).toString();
     }
+
+    public void removeRow(int index){
+        this.rows.remove(index);
+    }
 }

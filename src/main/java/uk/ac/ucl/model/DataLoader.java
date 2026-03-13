@@ -11,17 +11,18 @@ public class DataLoader {
     private static final String COMMA_DELIMITER = ",";
     private DataFrame dataFrame;
     private String errorMessage;
-
+    private String filename;
     /**
      * Creates a DataLoader and loads data from the specified CSV file into a DataFrame.
      * @param filename the path to the CSV file
      */
     public DataLoader(String filename) {
+        this.filename = filename;
         this.dataFrame = new DataFrame();
         this.errorMessage = null;
 
         try {
-            loadCSV(filename);
+            loadCSV();
         } catch (IOException e) {
             this.errorMessage = "Error reading file: " + e.getMessage();
             System.err.println(this.errorMessage);
@@ -31,25 +32,24 @@ public class DataLoader {
     /**
      * Reads a CSV file and loads its data into the DataFrame.
      * The first row is expected to contain column names.
-     * @param filename the path to the CSV file
      * @throws IOException if an I/O error occurs
      */
-    private void loadCSV(String filename) throws IOException {
-        File file = new File(filename);
+    private void loadCSV() throws IOException {
+        File file = new File(this.filename);
 
         if (!file.exists()) {
-            throw new IOException("File not found: " + filename);
+            throw new IOException("File not found: " + this.filename);
         }
 
         if (!file.canRead()) {
-            throw new IOException("Cannot read file: " + filename);
+            throw new IOException("Cannot read file: " + this.filename);
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             // Read the first line to get column names
             String headerLine = reader.readLine();
             if (headerLine == null) {
-                throw new IOException("File is empty: " + filename);
+                throw new IOException("File is empty: " + this.filename);
             }
 
             String[] columnNames = parseLine(headerLine);
@@ -116,6 +116,10 @@ public class DataLoader {
      */
     public String getErrorMessage() {
         return this.errorMessage;
+    }
+
+    public String getFilename() {
+        return this.filename;
     }
 }
 

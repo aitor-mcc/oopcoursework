@@ -37,6 +37,17 @@
     }
   %>
 
+  <%
+    if (patient != null) {
+      String editHref = "editPatient?id=" + patient.get("ID");
+  %>
+  <p>
+    <a href="<%=editHref%>">Edit this patient</a>
+  </p>
+  <%
+    }
+  %>
+
   <p><a href="patientList">Back to patient list</a></p>
 
 <jsp:include page="/footer.jsp"/>

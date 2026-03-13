@@ -89,6 +89,8 @@
     </noscript>
   </form>
 
+  <p><a href="editPatient">+ Add New Patient</a></p>
+
   <ul>
     <%
       List<Patient> patients = (List<Patient>) request.getAttribute("patients");
@@ -97,12 +99,24 @@
         for (Patient patient : patients)
         {
           String href = "patient?id=" + URLEncoder.encode(patient.id(), "UTF-8");
+          String editHref = "editPatient?id=" + URLEncoder.encode(patient.id(), "UTF-8");
     %>
-    <li><a href="<%=href%>"><%=patient.name()%></a></li>
+    <li>
+      <div style = "margin-right: 5px;">
+        <a href="<%=href%>"><%=patient.name()%></a>
+        <a href="<%=editHref%>" style=" display: inline; float: right;">Edit</a>
+        <form action="editPatient" method="post" style="display:inline; margin-right: 10px;"
+              onsubmit="return confirm('Delete <%=patient.name()%>? This cannot be undone.')">
+          <input type="hidden" name="action" value="delete">
+          <input type="hidden" name="id" value="<%=patient.id()%>">
+          <button type="submit" class="link-button" style = "float: right;">Delete</button>
+        </form>
+      </div>
+    </li>
     <%  }
-    }
+      }
     %>
-</ul>
+  </ul>
 <jsp:include page="/footer.jsp"/>
 </body>
 </html>

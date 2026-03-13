@@ -54,4 +54,10 @@ public class DataFrame {
         assert col != null;
         col.addRowValue(value);
     }
+
+    public void removeRow(int index){
+        for(Column column : columns){
+            column.removeRow(index);
+        }
+    }
 }
