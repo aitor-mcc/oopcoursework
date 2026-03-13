@@ -104,7 +104,7 @@
     <li>
       <div style = "margin-right: 5px;">
         <a href="<%=href%>"><%=patient.name()%></a>
-        <a href="<%=editHref%>" style=" display: inline; float: right;">Edit</a>
+        <a href="<%=editHref%>" style=" display: inline; float: right; width: fit-content;">Edit</a>
         <form action="editPatient" method="post" style="display:inline; margin-right: 10px;"
               onsubmit="return confirm('Delete <%=patient.name()%>? This cannot be undone.')">
           <input type="hidden" name="action" value="delete">
