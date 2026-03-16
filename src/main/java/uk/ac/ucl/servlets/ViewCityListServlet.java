@@ -17,12 +17,6 @@ import java.util.Map;
  * The ViewCityListServlet handles HTTP requests for displaying a list of all cities
  * where patients live, along with the count of residents in each city.
  * It is mapped to the URL "/cityList".
- *
- * This servlet demonstrates:
- * 1. Handling GET requests to retrieve and display unique cities with counts.
- * 2. Interacting with a Model via a Factory pattern.
- * 3. Error handling and forwarding to error pages.
- * 4. Request-scoped attribute passing to JSPs for rendering lists.
  */
 @WebServlet("/cityList")
 public class ViewCityListServlet extends HttpServlet {

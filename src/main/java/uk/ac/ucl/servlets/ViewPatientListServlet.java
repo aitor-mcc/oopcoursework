@@ -17,12 +17,6 @@ import java.util.List;
 /**
  * The ViewPatientListServlet handles HTTP requests for displaying the full list of patients.
  * It is mapped to the URL "/patientList".
- *
- * This servlet demonstrates:
- * 1. Handling GET requests to retrieve and display data.
- * 2. Interacting with a Model via a Factory pattern.
- * 3. Error handling and forwarding to error pages.
- * 4. Request-scoped attribute passing to JSPs for rendering lists.
  */
 @WebServlet("/patientList")
 public class ViewPatientListServlet extends HttpServlet

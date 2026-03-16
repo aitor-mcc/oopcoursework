@@ -68,14 +68,12 @@ public class DataLoader {
     }
 
     /**
-     * Parses a CSV line, handling empty fields (consecutive commas).
      * @param line the CSV line to parse
      * @return array of field values
      */
     private String[] parseLine(String line) {
         // Split by comma, keeping empty strings for consecutive commas
-        String[] fields = line.split(COMMA_DELIMITER, -1);
-        return fields;
+        return line.split(COMMA_DELIMITER, -1);
     }
 
     /**
@@ -85,35 +83,20 @@ public class DataLoader {
      */
     private void processDataRow(String line, String[] columnNames) {
         String[] values = parseLine(line);
-
-        // Add each value to its corresponding column
         for (int i = 0; i < columnNames.length; i++) {
             String value = (i < values.length) ? values[i] : "";
             dataFrame.addValue(columnNames[i], value);
         }
     }
 
-    /**
-     * Returns the DataFrame loaded with data from the CSV file.
-     * If an error occurred during loading, returns an empty DataFrame.
-     * @return the loaded DataFrame
-     */
     public DataFrame getData() {
         return this.dataFrame;
     }
 
-    /**
-     * Checks if an error occurred during file loading.
-     * @return true if an error occurred, false otherwise
-     */
     public boolean hasError() {
         return this.errorMessage != null;
     }
 
-    /**
-     * Gets the error message if an error occurred during loading.
-     * @return the error message, or null if no error occurred
-     */
     public String getErrorMessage() {
         return this.errorMessage;
     }

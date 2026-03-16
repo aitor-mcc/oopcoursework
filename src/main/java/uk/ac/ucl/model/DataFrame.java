@@ -8,7 +8,7 @@ public class DataFrame {
     private ArrayList<Column> columns;
 
     public DataFrame(){
-        this.columns = new ArrayList();
+        this.columns = new ArrayList<Column>();
     }
 
     public void addColumn(Column column){
@@ -16,7 +16,7 @@ public class DataFrame {
     }
 
     public ArrayList<String> getColumnNames(){
-        ArrayList namesList = new ArrayList();
+        ArrayList<String> namesList = new ArrayList<String>();
         for(Column column : columns){
             namesList.add(column.getName());
         }
@@ -24,7 +24,7 @@ public class DataFrame {
     }
 
     public int getRowCount(){
-        return this.columns.get(0).getSize();
+        return this.columns.getFirst().getSize();
     }
 
     private Column getColumn(String name){

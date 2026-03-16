@@ -17,12 +17,6 @@ import java.util.Map;
  * The ViewStateListServlet handles HTTP requests for displaying a list of all states
  * where patients live, along with the count of residents in each state.
  * It is mapped to the URL "/stateList".
- *
- * This servlet demonstrates:
- * 1. Handling GET requests to retrieve and display unique states with counts.
- * 2. Interacting with a Model via a Factory pattern.
- * 3. Error handling and forwarding to error pages.
- * 4. Request-scoped attribute passing to JSPs for rendering lists.
  */
 @WebServlet("/stateList")
 public class ViewStateListServlet extends HttpServlet {
